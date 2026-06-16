@@ -2,35 +2,35 @@ package com.nandini.splitwiseclone.service;
 
 import com.nandini.splitwiseclone.exception.UserNotFoundException;
 import com.nandini.splitwiseclone.model.User;
+import com.nandini.splitwiseclone.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
-    private List<User> users = new ArrayList<>();
+
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public User createUser(User user){
-        users.add(user);
-        return user;
+        return userRepository.save(user);
     }
 
     public List<User> getAllUsers(){
-        return users;
+        return userRepository.findAll();
     }
 
     public User getUserById(Long id){
-        return users
-                .stream()
-                .filter(user -> user.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new UserNotFoundException(id));
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
     public void deleteUserById(Long id){
-        users.remove(getUserById(id));
+        User existingUser = getUserById(id);
+        userRepository.delete(existingUser);
     }
 
     public User updateUser(Long id, User updatedUser){
@@ -39,7 +39,7 @@ public class UserService {
         existingUser.setName(updatedUser.getName());
         existingUser.setEmail(updatedUser.getEmail());
 
-        return existingUser;
+        return userRepository.save(existingUser);
     }
 
 }
