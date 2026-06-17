@@ -1,14 +1,16 @@
 package com.nandini.splitwiseclone.controller;
 
+import com.nandini.splitwiseclone.dto.UserRequestDTO;
+import com.nandini.splitwiseclone.dto.UserResponseDTO;
 import com.nandini.splitwiseclone.model.User;
 import com.nandini.splitwiseclone.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -17,29 +19,29 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/createuser")
-    public User createUser(@RequestBody User user){
-        return userService.createUser(user);
+    @PostMapping
+    public UserResponseDTO createUser(@RequestBody UserRequestDTO userRequestDTO){
+        return userService.createUser(userRequestDTO);
     }
 
-    @GetMapping("/getusers")
-    public List<User> getAllUsers(){
+    @GetMapping
+    public List<UserResponseDTO> getAllUsers(){
         return userService.getAllUsers();
     }
 
-    @GetMapping("/user/{id}")
-    public User getUserById(@PathVariable Long id){
+    @GetMapping("/{id}")
+    public UserResponseDTO getUserById(@PathVariable Long id){
         return userService.getUserById(id);
     }
 
-    @DeleteMapping("/user/{id}")
-    public ResponseEntity<String> deleteUserById(@PathVariable Long id){
-            userService.deleteUserById(id);
-            return ResponseEntity.ok("User Deleted Successfully with id: " + id);
+    @PutMapping("/{id}")
+    public UserResponseDTO updateUser(@PathVariable Long id, @RequestBody User updatedUser){
+        return userService.updateUser(id, updatedUser);
     }
 
-    @PutMapping("/user/id/{id}")
-    public User updatedUser(@PathVariable Long id, @RequestBody User updatedUser){
-        return userService.updateUser(id, updatedUser);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteUserById(@PathVariable Long id){
+        userService.deleteUserById(id);
+        return ResponseEntity.ok("User deleted successfully with id: " + id);
     }
 }

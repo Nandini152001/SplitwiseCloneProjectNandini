@@ -1,20 +1,16 @@
-package com.nandini.splitwiseclone.model;
+package com.nandini.splitwiseclone.dto;
 
-import jakarta.persistence.*;
-import lombok.Data;
+public class UserResponseDTO {
 
-@Entity
-@Data
-@Table(name="users")
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
-
     private String email;
+
+    public UserResponseDTO(Long id, String name, String email){
+        this.id = id;
+        this.name = name;
+        this.email = email;
+    }
 
     public Long getId() {
         return id;
@@ -39,5 +35,4 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-
 }
