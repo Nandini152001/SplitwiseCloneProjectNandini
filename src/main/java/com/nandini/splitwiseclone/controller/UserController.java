@@ -2,8 +2,9 @@ package com.nandini.splitwiseclone.controller;
 
 import com.nandini.splitwiseclone.dto.UserRequestDTO;
 import com.nandini.splitwiseclone.dto.UserResponseDTO;
-import com.nandini.splitwiseclone.model.User;
 import com.nandini.splitwiseclone.service.UserService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +21,9 @@ public class UserController {
     }
 
     @PostMapping
-    public UserResponseDTO createUser(@RequestBody UserRequestDTO userRequestDTO){
-        return userService.createUser(userRequestDTO);
+    public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody UserRequestDTO userRequestDTO){
+        UserResponseDTO createdUser =  userService.createUser(userRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
     @GetMapping
@@ -35,7 +37,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public UserResponseDTO updateUser(@PathVariable Long id, @RequestBody User updatedUser){
+    public UserResponseDTO updateUser(@PathVariable Long id, @Valid @RequestBody UserRequestDTO updatedUser){
         return userService.updateUser(id, updatedUser);
     }
 

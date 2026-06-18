@@ -6,10 +6,7 @@ import com.nandini.splitwiseclone.exception.UserNotFoundException;
 import com.nandini.splitwiseclone.model.User;
 import com.nandini.splitwiseclone.repository.UserRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 @Service
 public class UserService {
@@ -30,16 +27,6 @@ public class UserService {
     }
 
     public List<UserResponseDTO> getAllUsers(){
-
-//        List<User> currentUsersList = userRepository.findAll();
-//        List<UserResponseDTO> responseList = new ArrayList<>();
-//
-//        for(User currentUser : currentUsersList){
-//                    responseList.add(mapToResponseDTO(currentUser));
-//            }
-//
-//        return responseList;
-
         return userRepository.findAll().stream().map(this::mapToResponseDTO).toList();
     }
 
@@ -49,11 +36,10 @@ public class UserService {
     }
 
     public void deleteUserById(Long id){
-        User existingUser = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
-        userRepository.delete(existingUser);
+        userRepository.delete(getUserEntityById(id));
     }
 
-    public UserResponseDTO updateUser(Long id, User updatedUser){
+    public UserResponseDTO updateUser(Long id, UserRequestDTO updatedUser){
         User existingUser = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
         existingUser.setName(updatedUser.getName());
@@ -62,6 +48,10 @@ public class UserService {
         User savedUser = userRepository.save(existingUser);
 
         return mapToResponseDTO(savedUser);
+    }
+
+    private User getUserEntityById(Long id){
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
     private UserResponseDTO mapToResponseDTO(User user){
