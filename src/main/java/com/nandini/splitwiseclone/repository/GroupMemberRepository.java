@@ -1,0 +1,21 @@
+package com.nandini.splitwiseclone.repository;
+
+import com.nandini.splitwiseclone.model.GroupMember;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface GroupMemberRepository extends JpaRepository<GroupMember, Long> {
+
+    boolean existsByExpenseGroup_idAndUser_id(Long groupId, Long userId);
+
+    @Query("""
+            SELECT gm 
+            FROM GroupMember gm
+            JOIN FETCH gm.user WHERE gm.expenseGroup.id = :groupId""")
+    List<GroupMember> findByExpenseGroup_Id(Long groupId);
+
+    Optional<GroupMember> findByExpenseGroup_idAndUser_Id(Long GroupId, Long UserId);
+}

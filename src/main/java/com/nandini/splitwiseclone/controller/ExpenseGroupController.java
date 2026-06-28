@@ -45,7 +45,7 @@ public class ExpenseGroupController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteGroupById(@PathVariable Long id){
         expenseGroupService.deleteGroupById(id);
-        return ResponseEntity.ok("Expense group deleted succesfully with id: " + id);
+        return ResponseEntity.ok("Expense group deleted successfully with id: " + id);
     }
 
 }

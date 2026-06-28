@@ -39,4 +39,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
 
+    @ExceptionHandler(GroupMemberAlreadyExistsException.class)
+    public ResponseEntity<String> handleGroupMemberAlreadyExist(GroupMemberAlreadyExistsException ex){
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body(ex.getMessage());
+    }
+
 }
