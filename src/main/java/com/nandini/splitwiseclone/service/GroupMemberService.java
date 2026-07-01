@@ -81,7 +81,6 @@ public class GroupMemberService {
                         groupMember.getRole(),
                         groupMember.getJoinedAt()
                 );
-                ConcurrentHashMap
         }
 
 }

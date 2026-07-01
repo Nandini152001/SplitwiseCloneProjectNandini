@@ -11,6 +11,7 @@ public interface GroupMemberRepository extends JpaRepository<GroupMember, Long> 
 
     boolean existsByExpenseGroup_idAndUser_id(Long groupId, Long userId);
 
+//    Tackling N+1 Query future issues with JOIN FETCH JPQL
     @Query("""
             SELECT gm 
             FROM GroupMember gm
